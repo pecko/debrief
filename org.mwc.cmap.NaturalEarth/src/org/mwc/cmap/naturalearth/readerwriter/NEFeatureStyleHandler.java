@@ -122,13 +122,14 @@ abstract public class NEFeatureStyleHandler extends
 				_style.setTextColor(res);
 			}
 		});
-		addHandler(new FontHandler()
-		{
-			public void setFont(final java.awt.Font font)
-			{
-				_style.setTextFont(font);
-			}
-		});
+		// FIXME
+//		addHandler(new FontHandler()
+//		{
+//			public void setFont(final java.awt.Font font)
+//			{
+//				_style.setTextFont(font);
+//			}
+//		});
 
 	}
 
@@ -170,7 +171,8 @@ abstract public class NEFeatureStyleHandler extends
 				style.getTextColor(), eStyle, doc, TEXT_COL);
 
 		// and the font
-		FontHandler.exportFont(style.getFont(), eStyle, doc);
+		// FIXME
+		//FontHandler.exportFont(style.getFont(), eStyle, doc);
 
 		parent.appendChild(eStyle);
 
