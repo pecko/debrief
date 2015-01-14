@@ -5,11 +5,14 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.geotools.data.FileDataStore;
 import org.geotools.data.FileDataStoreFinder;
 import org.geotools.data.simple.SimpleFeatureSource;
@@ -24,6 +27,7 @@ import org.mwc.cmap.naturalearth.view.NEFeatureGroup;
 import org.mwc.cmap.naturalearth.view.NEFeatureStore;
 import org.mwc.cmap.naturalearth.view.NEFeatureStyle;
 import org.mwc.cmap.naturalearth.view.NEResolution;
+import org.osgi.framework.Bundle;
 
 import MWC.Algorithms.Conversions;
 import MWC.GUI.BaseLayer;
@@ -39,6 +43,8 @@ import MWC.GenericData.WorldLocation;
 
 public class NELayer extends GeoToolsLayer implements NeedsToKnowAboutLayers, InterestedInViewportChange,  BaseLayer.ProvidesRange
 {
+
+	private static final String STYLES_POLYGON_POLYGONWITHSTYLEDLABEL_SLD = "styles/polygon_polygonwithstyledlabel.sld";
 
 	private static final long serialVersionUID = 1L;
 
@@ -374,7 +380,38 @@ public class NELayer extends GeoToolsLayer implements NeedsToKnowAboutLayers, In
 	private FeatureLayer addLayer(NEFeatureStyle style)
 	{
 		SimpleFeatureSource featureSource = getFeatureSource(style);
-		Style sld = NaturalearthUtil.createStyle2(featureSource, style);
+		Style sld;
+		if ("ne_10m_admin_0_boundary_lines_land".equals(style.getName()))
+		{
+			InputStream in = null;
+			try
+			{
+				Bundle bundle = Platform.getBundle(Activator.PLUGIN_ID);
+				URL entry = bundle.getEntry(STYLES_POLYGON_POLYGONWITHSTYLEDLABEL_SLD);
+				in = entry.openStream();
+				sld = NaturalearthUtil.loadStyle(in);
+			}
+			catch (IOException e)
+			{
+				Activator.logError(IStatus.INFO, "SLD issue: " + STYLES_POLYGON_POLYGONWITHSTYLEDLABEL_SLD, e);
+				return null;
+			} finally {
+				if (in != null) {
+					try
+					{
+						in.close();
+					}
+					catch (IOException e)
+					{
+						// ignore
+					}
+				}
+			}
+		}
+		else
+		{
+			sld = NaturalearthUtil.createStyle2(featureSource, style);
+		}
 		FeatureLayer layer = new NEFeatureLayer(style, featureSource, sld);
 		_myMap.addLayer(layer);
 		_gtLayers.add(layer);

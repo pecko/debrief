@@ -9,6 +9,7 @@ import java.awt.image.RenderedImage;
 import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 
 import org.eclipse.core.runtime.IStatus;
@@ -422,5 +423,13 @@ public class NaturalearthUtil
 			Activator.logError(IStatus.WARNING, "Invalid file: " + fileName, e);
 		}
     return null;
+	}
+	
+	public static Style loadStyle(InputStream in)
+	{
+		SLDParser stylereader;
+		stylereader = new SLDParser(styleFactory, in);
+		Style[] style = stylereader.readXML();
+		return style[0];
 	}
 }

@@ -222,8 +222,10 @@ public class Activator extends AbstractUIPlugin
 			ne10.add(createF(ne10, null,
 					"ne_10m_admin_0_boundary_lines_maritime_indicator", true, null,
 					new Color(78, 128, 202)));
-//			ne10.add(createF(null, "ne_10m_admin_0_boundary_lines_land", true, null,
-//					Color.green));
+			// FIXME testing SLD file
+			ne10.add(createF(ne10, null, "ne_10m_admin_0_boundary_lines_land", true, null,
+					Color.green));
+			
 			ne10.add(createF(ne10, null, "ne_10m_admin_0_countries", true, null, new Color(208, 162, 117),
 					new Color(150, 117, 84), 12, PLAIN, "SansSerif"));
 //			ne10.add(createF(null, "ne_10m_geography_regions_points", true, null,
