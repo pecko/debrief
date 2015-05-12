@@ -12,7 +12,6 @@ Bundle-Vendor: MWC
 Bundle-ClassPath: .,
  libs/jcommon-1.0.23.jar,
  libs/jfreechart-1.0.19-experimental.jar,
- libs/jfreechart-1.0.19-swt.jar,
  libs/jfreechart-1.0.19.jar
 Export-Package: com.keypoint,
  org.jfree,
